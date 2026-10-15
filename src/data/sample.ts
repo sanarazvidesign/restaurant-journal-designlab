@@ -1,0 +1,186 @@
+import type { DB, Restaurant } from './types'
+
+/**
+ * Sample data only. Restaurant names, certifier and halal details below are
+ * made up so nobody mistakes demo data for real halal information.
+ */
+
+const base = {
+  place_id: null,
+  halal_type_note: '',
+  certifier: '',
+  last_verified_date: null,
+  notes: '',
+  photo: null,
+  created_at: '2026-08-01T12:00:00.000Z',
+} satisfies Partial<Restaurant>
+
+const restaurants: Restaurant[] = [
+  {
+    ...base,
+    id: 'r1',
+    name: 'Shalimar Grill (sample)',
+    address: '1200 Main St, Edison, NJ',
+    lat: 40.5187,
+    lng: -74.4121,
+    cuisine: 'Pakistani',
+    price_level: 2,
+    halal_status: 'fully_halal',
+    halal_type_note: 'Zabiha meat, said by the owner',
+    alcohol_served: 'no',
+    pork_served: 'no',
+    verification_method: 'certificate_seen',
+    certifier: 'Demo Halal Council',
+    last_verified_date: '2026-08-20',
+    status: 'visited',
+    notes: 'Great for family dinners. Parking behind the building.',
+  },
+  {
+    ...base,
+    id: 'r2',
+    name: 'Bayside Smokehouse (sample)',
+    address: '88 Harbor Rd, Jersey City, NJ',
+    lat: 40.7178,
+    lng: -74.0431,
+    cuisine: 'BBQ',
+    price_level: 3,
+    halal_status: 'partially_halal',
+    halal_type_note: 'Only the chicken is halal; ask for it',
+    alcohol_served: 'yes',
+    pork_served: 'yes',
+    verification_method: 'asked_staff',
+    last_verified_date: '2026-01-15',
+    status: 'visited',
+    notes: 'Cross-contamination possible on the grill.',
+  },
+  {
+    ...base,
+    id: 'r3',
+    name: 'Zaytoun Kitchen (sample)',
+    address: '45 Market St, Paterson, NJ',
+    lat: 40.9168,
+    lng: -74.1718,
+    cuisine: 'Lebanese',
+    price_level: 2,
+    halal_status: 'fully_halal',
+    alcohol_served: 'no',
+    pork_served: 'no',
+    verification_method: 'website',
+    last_verified_date: '2026-09-10',
+    status: 'visited',
+    notes: 'Kid-friendly. Big shareable platters.',
+  },
+  {
+    ...base,
+    id: 'r4',
+    name: 'Noodle House (sample)',
+    address: '300 Washington St, Hoboken, NJ',
+    lat: 40.7433,
+    lng: -74.0324,
+    cuisine: 'Chinese',
+    price_level: 2,
+    halal_status: 'unsure',
+    alcohol_served: 'unsure',
+    pork_served: 'yes',
+    verification_method: 'none',
+    status: 'want_to_try',
+    notes: 'A friend recommended the hand-pulled noodles. Need to ask about halal.',
+  },
+  {
+    ...base,
+    id: 'r5',
+    name: 'Dosa Garden (sample)',
+    address: '560 Oak Tree Rd, Iselin, NJ',
+    lat: 40.5754,
+    lng: -74.3224,
+    cuisine: 'South Indian',
+    price_level: 1,
+    halal_status: 'fully_halal',
+    halal_type_note: 'Vegetarian menu',
+    alcohol_served: 'no',
+    pork_served: 'no',
+    verification_method: 'owner_said',
+    last_verified_date: '2026-07-02',
+    status: 'visited',
+    notes: 'Fast lunch spot. Light and healthy options.',
+  },
+  {
+    ...base,
+    id: 'r6',
+    name: 'Corner Slice Pizza (sample)',
+    address: '17 Newark Ave, Jersey City, NJ',
+    lat: 40.7213,
+    lng: -74.0467,
+    cuisine: 'Pizza',
+    price_level: 1,
+    halal_status: 'partially_halal',
+    halal_type_note: 'Halal chicken toppings only',
+    alcohol_served: 'no',
+    pork_served: 'yes',
+    verification_method: 'website',
+    last_verified_date: '2026-06-05',
+    status: 'visited',
+  },
+  {
+    ...base,
+    id: 'r7',
+    name: 'Harbor Steakhouse (sample)',
+    address: '1 Pier Way, Hoboken, NJ',
+    lat: 40.7367,
+    lng: -74.0275,
+    cuisine: 'Steakhouse',
+    price_level: 4,
+    halal_status: 'not_halal',
+    alcohol_served: 'yes',
+    pork_served: 'yes',
+    verification_method: 'asked_staff',
+    last_verified_date: '2026-05-12',
+    status: 'visited',
+    notes: 'Only seafood works here. Date-night splurge.',
+  },
+]
+
+export const SAMPLE_DB: DB = {
+  restaurants,
+  visits: [
+    { id: 'v1', restaurant_id: 'r1', date: '2026-09-27', companions: 'family', party_size: 5, total_cost: 112.5, overall_rating: 5, note: 'Eid week dinner.' },
+    { id: 'v2', restaurant_id: 'r1', date: '2026-08-20', companions: 'friends', party_size: 4, total_cost: 78, overall_rating: 4, note: '' },
+    { id: 'v3', restaurant_id: 'r2', date: '2026-07-11', companions: 'friends', party_size: 3, total_cost: 96, overall_rating: 3, note: 'Chicken was good, sides not halal.' },
+    { id: 'v4', restaurant_id: 'r3', date: '2026-09-10', companions: 'family', party_size: 4, total_cost: 84, overall_rating: 5, note: '' },
+    { id: 'v5', restaurant_id: 'r5', date: '2026-10-01', companions: 'solo', party_size: 1, total_cost: 14, overall_rating: 4, note: 'Weekday lunch.' },
+    { id: 'v6', restaurant_id: 'r6', date: '2026-06-05', companions: 'friends', party_size: 3, total_cost: 36, overall_rating: 3, note: '' },
+    { id: 'v7', restaurant_id: 'r7', date: '2026-05-12', companions: 'partner', party_size: 2, total_cost: 210, overall_rating: 4, note: 'Anniversary.' },
+  ],
+  dishes: [
+    { id: 'd1', restaurant_id: 'r1', visit_id: 'v1', name: 'Chicken karahi', halal_status: 'fully_halal', price: 18.99, rating: 5, would_order_again: true, healthy_tag: false, note: 'Ask for medium spice.', photo: null },
+    { id: 'd2', restaurant_id: 'r1', visit_id: 'v2', name: 'Seekh kebab plate', halal_status: 'fully_halal', price: 14.5, rating: 4, would_order_again: true, healthy_tag: true, note: '', photo: null },
+    { id: 'd3', restaurant_id: 'r2', visit_id: 'v3', name: 'Smoked chicken half', halal_status: 'fully_halal', price: 17, rating: 4, would_order_again: true, healthy_tag: false, note: 'Staff confirmed halal chicken.', photo: null },
+    { id: 'd4', restaurant_id: 'r2', visit_id: 'v3', name: 'Mac and cheese', halal_status: 'unsure', price: 6, rating: 3, would_order_again: false, healthy_tag: false, note: 'Not sure about the broth.', photo: null },
+    { id: 'd5', restaurant_id: 'r3', visit_id: 'v4', name: 'Mixed grill platter', halal_status: 'fully_halal', price: 32, rating: 5, would_order_again: true, healthy_tag: false, note: 'Feeds three.', photo: null },
+    { id: 'd6', restaurant_id: 'r5', visit_id: 'v5', name: 'Masala dosa', halal_status: 'fully_halal', price: 11, rating: 4, would_order_again: true, healthy_tag: true, note: '', photo: null },
+    { id: 'd7', restaurant_id: 'r6', visit_id: 'v6', name: 'Chicken tikka slice', halal_status: 'fully_halal', price: 4.5, rating: 3, would_order_again: false, healthy_tag: false, note: '', photo: null },
+    { id: 'd8', restaurant_id: 'r7', visit_id: 'v7', name: 'Grilled salmon', halal_status: 'fully_halal', price: 38, rating: 4, would_order_again: true, healthy_tag: true, note: 'Seafood is the safe choice.', photo: null },
+  ],
+  shareLinks: [],
+  profile: { name: '', home_area: '', currency: 'USD', onboarded: false },
+}
+
+export interface PlaceLookupResult {
+  name: string
+  address: string
+  cuisine: string
+  lat: number
+  lng: number
+}
+
+/** Stand-in for a Google Places / Apple Maps lookup. Swap for the real API later. */
+export const PLACE_LOOKUP: PlaceLookupResult[] = [
+  { name: 'Al-Noor Biryani House', address: '22 Oak Ave, Edison, NJ', cuisine: 'Indian', lat: 40.5201, lng: -74.4105 },
+  { name: 'Cedar Tree Shawarma', address: '9 Broad St, Clifton, NJ', cuisine: 'Lebanese', lat: 40.8584, lng: -74.1638 },
+  { name: 'Istanbul Corner Cafe', address: '70 Park Ave, Paterson, NJ', cuisine: 'Turkish', lat: 40.9168, lng: -74.1718 },
+  { name: 'Spice Route Kitchen', address: '410 Central Ave, Jersey City, NJ', cuisine: 'Indian', lat: 40.7282, lng: -74.0776 },
+  { name: 'Burger Barn', address: '55 River Rd, Fort Lee, NJ', cuisine: 'Burgers', lat: 40.8509, lng: -73.9701 },
+  { name: 'Sakura Sushi Bar', address: '12 Main St, Hackensack, NJ', cuisine: 'Japanese', lat: 40.8859, lng: -74.0435 },
+  { name: 'Tandoori Nights', address: '801 Route 27, Iselin, NJ', cuisine: 'Indian', lat: 40.5731, lng: -74.3232 },
+  { name: 'The Falafel Cart', address: '3 Journal Sq, Jersey City, NJ', cuisine: 'Middle Eastern', lat: 40.7329, lng: -74.0628 },
+]
