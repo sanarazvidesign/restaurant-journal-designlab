@@ -11,6 +11,13 @@ const icons = {
     <path d="M4 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a1 1 0 0 1-1.5.9L12 17l-6.5 2.9A1 1 0 0 1 4 19z" />
   ),
   add: <path d="M12 5v14M5 12h14" />,
+  blog: (
+    <>
+      <path d="M4 5h13a1 1 0 0 1 1 1v13H6a2 2 0 0 1-2-2z" />
+      <path d="M18 9h2v8a2 2 0 0 1-2 2" />
+      <path d="M8 9h6M8 13h6" />
+    </>
+  ),
   profile: (
     <>
       <circle cx="12" cy="8" r="4" />
@@ -68,6 +75,9 @@ export function AppShell(): ReactNode {
               <NavLink to="/add" className={({ isActive }) => navClass(isActive)}>
                 <Icon name="add" /> Add restaurant
               </NavLink>
+              <NavLink to="/blog" className={({ isActive }) => navClass(isActive)}>
+                <Icon name="blog" /> Blog
+              </NavLink>
               <NavLink to="/profile" className={({ isActive }) => navClass(isActive)}>
                 <Icon name="profile" /> Profile
               </NavLink>
@@ -82,7 +92,7 @@ export function AppShell(): ReactNode {
         {/* Bottom tab bar (phone) */}
         <nav
           aria-label="Main"
-          className="fixed inset-x-0 bottom-0 z-20 grid grid-cols-3 items-end border-t border-slate-200 bg-white/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden"
+          className="fixed inset-x-0 bottom-0 z-20 grid grid-cols-4 items-end border-t border-slate-200 bg-white/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden"
         >
           <NavLink to="/" end className={({ isActive }) => tabClass(isActive)}>
             <Icon name="places" />
@@ -93,6 +103,10 @@ export function AppShell(): ReactNode {
               <Icon name="add" />
             </span>
             <span className="mt-1">Add</span>
+          </NavLink>
+          <NavLink to="/blog" className={({ isActive }) => tabClass(isActive)}>
+            <Icon name="blog" />
+            <span>Blog</span>
           </NavLink>
           <NavLink to="/profile" className={({ isActive }) => tabClass(isActive)}>
             <Icon name="profile" />

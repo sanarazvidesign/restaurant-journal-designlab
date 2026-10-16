@@ -81,3 +81,27 @@ export interface DB {
   shareLinks: ShareLink[]
   profile: UserProfile
 }
+
+export type BlogArea = 'New Jersey' | 'New York City'
+
+/** A curated summary of a review published elsewhere on the web. */
+export interface BlogPost {
+  id: string
+  title: string
+  restaurant_name: string
+  cuisine: string
+  city: string
+  area: BlogArea
+  /** What the original source claims; not verified by this app. */
+  halal_claim: HalalStatus
+  rating: number | null
+  /** e.g. "4.7 on Google" */
+  rating_source: string
+  source_name: string
+  /** Link to the original review, or null for sample posts. */
+  source_url: string | null
+  /** Short summary in our own words. */
+  summary: string
+  published_at: string
+  is_sample: boolean
+}

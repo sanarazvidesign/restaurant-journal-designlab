@@ -4,9 +4,11 @@
  * ever read or write their own rows; user_id is filled in by a column default
  * (auth.uid()), so it is never sent from the client.
  */
+import { SAMPLE_BLOG_POSTS } from './blogSample'
 import { SAMPLE_DB } from './sample'
 import { supabase } from './supabase'
 import type {
+  BlogPost,
   Dish,
   PlaceStatus,
   Restaurant,
@@ -339,4 +341,24 @@ export async function clearAllData(): Promise<void> {
 export async function resetSampleData(): Promise<void> {
   await clearAllData()
   await seedSampleData(false)
+}
+
+// ---------- Blog ----------
+
+/**
+ * Curated summaries of reviews from elsewhere on the web (read-only for users).
+ * If the blog_posts table has not been created yet (see supabase/blog.sql), the
+ * built-in sample posts are shown instead so the feature still works.
+ */
+export async function listBlogPosts(): Promise<BlogPost[]> {
+  const res = await supabase.from('blog_posts').select('*').order('published_at', { ascending: false })
+  if (res.error) {
+    if (res.error.code === 'PGRST205' || res.error.code === '42P01') return SAMPLE_BLOG_POSTS
+    throw new Error(res.error.message)
+  }
+  return res.data as BlogPost[]
+}
+
+export async function getBlogPost(id: string): Promise<BlogPost | null> {
+  return (await listBlogPosts()).find((p) => p.id === id) ?? null
 }

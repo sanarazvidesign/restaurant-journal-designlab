@@ -13,6 +13,7 @@ It works on phone, tablet and desktop.
 - **Visits and dishes:** log a date, who you went with, party size, total bill and rating, plus dishes with halal status, price, rating, "would order again" and a healthy tag.
 - **My Places:** list or map view, search, and filters for fully halal, no alcohol, no pork, want to try, price, cuisine and rating.
 - **Share card:** choose what to include and send it through the system share sheet, or copy it as text.
+- **Halal Finds blog:** curated summaries of new, highly rated halal restaurant reviews from around the web (New Jersey and NYC). Each post links to the original review, shows what the source says about halal status, and can be saved to your journal as *want to try*. Posts currently use clearly labelled sample content.
 - **Accounts:** email and password sign-in. Each user only ever sees their own data.
 
 ## Tech stack
@@ -36,7 +37,8 @@ npm install
 
 1. Create a project at [supabase.com](https://supabase.com).
 2. Open the SQL editor and run [`supabase/schema.sql`](supabase/schema.sql). It creates the tables, row-level security policies and a signup trigger that creates each user's profile.
-3. Under **Authentication → Providers → Email**, decide whether to require email confirmation. It's on by default. Turn it off while testing if you don't want to click confirmation links.
+3. Optional, for the blog: run [`supabase/blog.sql`](supabase/blog.sql) too. It creates the read-only `blog_posts` table and seeds sample posts. Until you do, the app shows the same sample posts built in.
+4. Under **Authentication → Providers → Email**, decide whether to require email confirmation. It's on by default. Turn it off while testing if you don't want to click confirmation links.
 
 ### 2. Add environment variables
 
@@ -84,6 +86,7 @@ src/
   lib/         Formatting helpers and image resizing
 supabase/
   schema.sql   Database schema and row-level security policies
+  blog.sql     Blog posts table (read-only for app users) with sample posts
 ```
 
 ## Deploying
@@ -93,8 +96,13 @@ The repo includes a `vercel.json` with a single-page-app rewrite, so it deploys 
 1. Add `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` as environment variables.
 2. After the first deploy, open Supabase → **Authentication → URL Configuration** and set the **Site URL** to your deployed address. Add it, with `/**` on the end, to the redirect URLs. Otherwise confirmation emails link to the wrong place.
 
+## Blog posts
+
+Reviews on the web belong to their authors, so the blog never copies review text. Each post is a short summary in your own words, with the source's name and a link to the original. Add real posts in the Supabase SQL editor or table editor: set `source_url` to the original review, write the summary yourself, and set `is_sample` to `false`. App users can read posts but not change them.
+
 ## Known limitations
 
+- Blog posts start as clearly labelled samples. A daily routine adds new ones from web search results; each is a short summary with a link to the source, and ratings and halal claims should be double-checked against that source.
 - Place search is a demo lookup over a few sample places. Real Google Places or Apple Maps lookup is planned.
 - The map view is a simple pin plot with no map tiles.
 - Photos are stored as small images inside database rows. A Supabase Storage bucket would suit heavy photo use better.
