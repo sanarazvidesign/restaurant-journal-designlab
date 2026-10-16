@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { AppShell } from './components/AppShell'
 import { isConfigured } from './data/api'
+import { BlogList, BlogPostPage } from './pages/Blog'
 import Login from './pages/Login'
 import AddRestaurant from './pages/AddRestaurant'
 import DishForm from './pages/DishForm'
@@ -31,6 +32,8 @@ export default function App() {
       <Route element={<AppShell />}>
         <Route index element={<MyPlaces />} />
         <Route path="add" element={<AddRestaurant />} />
+        <Route path="blog" element={<BlogList />} />
+        <Route path="blog/:slug" element={<BlogPostPage />} />
         <Route path="profile" element={<Profile />} />
         <Route path="restaurant/:id" element={<RestaurantDetail />} />
         <Route path="restaurant/:id/halal" element={<HalalDetails />} />
