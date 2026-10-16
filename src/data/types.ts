@@ -84,6 +84,17 @@ export interface DB {
 
 export type BlogArea = 'New Jersey' | 'New York City'
 
+export interface BlogImage {
+  url: string
+  alt: string
+  /** True when this is a generic stock photo, not a photo of this restaurant or dish. */
+  stock?: boolean
+  /** Who to credit, e.g. "Pexels". */
+  credit?: string
+  /** Page for the photo, linked from the credit. */
+  credit_url?: string
+}
+
 /** A curated summary of a review published elsewhere on the web. */
 export interface BlogPost {
   id: string
@@ -102,6 +113,8 @@ export interface BlogPost {
   source_url: string | null
   /** Short summary in our own words. */
   summary: string
+  /** Images taken from the source review page; credited to the source in the UI. */
+  images: BlogImage[]
   published_at: string
   is_sample: boolean
 }

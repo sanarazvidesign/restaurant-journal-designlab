@@ -356,7 +356,7 @@ export async function listBlogPosts(): Promise<BlogPost[]> {
     if (res.error.code === 'PGRST205' || res.error.code === '42P01') return SAMPLE_BLOG_POSTS
     throw new Error(res.error.message)
   }
-  return res.data as BlogPost[]
+  return (res.data as BlogPost[]).map((p) => ({ ...p, images: Array.isArray(p.images) ? p.images : [] }))
 }
 
 export async function getBlogPost(id: string): Promise<BlogPost | null> {

@@ -3,7 +3,9 @@ import { Link } from 'react-router-dom'
 import { listBlogPosts } from '../data/api'
 import type { BlogArea, BlogPost } from '../data/types'
 import { useAsync } from '../hooks/useAsync'
+import { BlogImage } from '../components/BlogImage'
 import { Chip, EmptyState, ErrorNote, HalalBadge, Loading, PageHeader, RatingStars } from '../components/ui'
+import { isSamplePost } from '../lib/blog'
 import { formatDate } from '../lib/format'
 
 const AREAS: BlogArea[] = ['New Jersey', 'New York City']
@@ -44,36 +46,50 @@ export default function Blog() {
 }
 
 function PostCard({ post }: { post: BlogPost }) {
+  const hero = post.images[0]
   return (
     <Link
       to={`/blog/${post.id}`}
-      className="block rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_1px_2px_0_rgba(0,0,0,0.06)] transition-shadow hover:shadow-md"
+      className="block overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_1px_2px_0_rgba(0,0,0,0.06)] transition-shadow hover:shadow-md"
     >
-      <div className="flex items-center gap-2 text-xs text-slate-500">
-        <span>{post.city}</span>
-        <span aria-hidden>·</span>
-        <span>{post.cuisine}</span>
-        {post.is_sample && (
-          <span className="ml-auto rounded-full bg-slate-100 px-2 py-0.5 font-semibold text-slate-600">Sample</span>
-        )}
-      </div>
-      <h2 className="mt-1 text-lg font-bold leading-snug tracking-tight">{post.title}</h2>
-      <p className="text-sm font-medium text-emerald-800">{post.restaurant_name}</p>
-      <p className="mt-2 line-clamp-3 text-sm text-slate-600">{post.summary}</p>
-      <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1.5">
-        {post.rating != null && (
-          <span className="inline-flex items-center gap-1.5 text-xs text-slate-500">
-            <RatingStars value={post.rating} />
-            <span className="font-semibold text-slate-700">{post.rating.toFixed(1)}</span>
+      <div className="relative">
+        <BlogImage
+          src={hero?.url}
+          alt={hero?.alt || `${post.restaurant_name}, ${post.cuisine}`}
+          cuisine={post.cuisine}
+          stock={hero?.stock}
+          className="aspect-video w-full"
+        />
+        {isSamplePost(post) && (
+          <span className="absolute right-2 top-2 rounded-full bg-white/90 px-2 py-0.5 text-xs font-semibold text-slate-600 shadow-sm">
+            Sample
           </span>
         )}
-        <span className="inline-flex items-center gap-1.5 text-xs text-slate-500">
-          Source says <HalalBadge status={post.halal_claim} />
-        </span>
       </div>
-      <p className="mt-2 text-xs text-slate-500">
-        via {post.source_name} · {formatDate(post.published_at)}
-      </p>
+      <div className="p-4">
+        <div className="flex items-center gap-2 text-xs text-slate-500">
+          <span>{post.city}</span>
+          <span aria-hidden>·</span>
+          <span>{post.cuisine}</span>
+        </div>
+        <h2 className="mt-1 text-lg font-bold leading-snug tracking-tight">{post.title}</h2>
+        <p className="text-sm font-medium text-emerald-800">{post.restaurant_name}</p>
+        <p className="mt-2 line-clamp-3 text-sm text-slate-600">{post.summary}</p>
+        <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1.5">
+          {post.rating != null && (
+            <span className="inline-flex items-center gap-1.5 text-xs text-slate-500">
+              <RatingStars value={post.rating} />
+              <span className="font-semibold text-slate-700">{post.rating.toFixed(1)}</span>
+            </span>
+          )}
+          <span className="inline-flex items-center gap-1.5 text-xs text-slate-500">
+            Source says <HalalBadge status={post.halal_claim} />
+          </span>
+        </div>
+        <p className="mt-2 text-xs text-slate-500">
+          via {post.source_name} · {formatDate(post.published_at)}
+        </p>
+      </div>
     </Link>
   )
 }
